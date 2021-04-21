@@ -2,3 +2,6 @@
 . "$(dirname "$0")/_/husky.sh"
 
 .git/hooks/commit-msg 
+.git/hooks/commit-msg 
+.git/hooks/commit-msg 
+.git/hooks/commit-msg 
