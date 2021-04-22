@@ -4,6 +4,7 @@
  */
 
 export default {
+  // testTimeout: 30000,
   // All imported modules in your tests should be mocked automatically
   // automock: false,
 
@@ -178,8 +179,9 @@ export default {
 
   // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
   transformIgnorePatterns: [
-    'node_modules/(?!variables/.*)',
-    '\\.pnp\\.[^\\/]+$'
+    '/node_modules/'
+    // 'node_modules/(?!variables/.*)'
+    // '\\.pnp\\.[^\\/]+$'
   ]
 
   // An array of regexp pattern strings that are matched against all modules before the module loader will automatically return a mock for them
