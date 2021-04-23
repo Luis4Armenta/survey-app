@@ -6,7 +6,7 @@ import { MongoDBUserRepository } from '../../repositories/implementations/MongoD
 describe('MongoDB User Repository', () => {
   const userRepository = new MongoDBUserRepository()
   beforeAll(async () => {
-    await mongoose.connect('mongodb://localhost/forms-test', {
+    await mongoose.connect('mongodb://localhost/forms-test-users', {
       useNewUrlParser: true,
       useUnifiedTopology: true,
       useFindAndModify: false,
@@ -96,7 +96,8 @@ describe('MongoDB User Repository', () => {
     beforeEach(async () => {
       user = await new User({
         username: 'example',
-        password: 'password'
+        password: 'password',
+        forms: []
       })
       form = await Form.create({
         name: 'test',

@@ -1,41 +1,42 @@
 import { Model, model, Schema, Document } from 'mongoose'
 import { CloseAnswer, closeAnswerSchema, OpenAnswer } from './Answer'
 
-export interface Question {
+export interface IQuestion {
   question: string
 }
 
-export interface QuestionModel extends Document, Question {
+export interface QuestionModel extends Document, IQuestion {
   question: string
 }
 
 export const questionSchema = new Schema({
   question: String
-}, { discriminatorKey: 'questionType' })
+})
 
 export const Question: Model<QuestionModel> = model('Question', questionSchema)
 
-export interface CloseQuestion extends Question {
+export interface ICloseQuestion extends IQuestion {
   options: string[]
   answers: CloseAnswer[]
 }
-export interface CloseQuestionModel extends Document, Question {
+export interface CloseQuestionModel extends Document, ICloseQuestion {
   options: string[]
   answers: CloseAnswer[]
 }
 
 export const closeQuestionSchema = new Schema({
+  question: String,
   options: [String],
   answers: [closeAnswerSchema]
-}, { discriminatorKey: 'questionType', _id: false })
+})
 
-export const CQuestion: Model<CloseQuestionModel> = model('CloseQuestion', closeQuestionSchema)
+export const CloseQuestion: Model<CloseQuestionModel> = model('CloseQuestion', closeQuestionSchema)
 
-export interface OpenQuestion extends Question {
+export interface OpenQuestion extends IQuestion {
   answers: OpenAnswer[]
 }
 
-export interface OpenQuestionModel extends Document, Question {
+export interface OpenQuestionModel extends Document, IQuestion {
   answers: OpenAnswer[]
 }
 

@@ -1,16 +1,17 @@
 import { Model, Schema, model, Document } from 'mongoose'
-import { Question, QuestionModel } from './Question'
+import { IQuestion, QuestionModel } from './Question'
 
 export interface IForm {
   _id?: string
   name: string
-  questions: Question[]
+  questions: IQuestion[]
 }
 
 export interface FormModel extends Document, IForm {
   _id: string
   name: string
   questions: QuestionModel[]
+  // questions: QuestionModel[]
 }
 
 export const formSchema = new Schema({
