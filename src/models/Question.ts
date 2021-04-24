@@ -2,14 +2,17 @@ import { Model, model, Schema, Document } from 'mongoose'
 import { CloseAnswer, closeAnswerSchema, OpenAnswer } from './Answer'
 
 export interface IQuestion {
+  num: number
   question: string
 }
 
 export interface QuestionModel extends Document, IQuestion {
+  num: number
   question: string
 }
 
 export const questionSchema = new Schema({
+  num: Number,
   question: String
 })
 

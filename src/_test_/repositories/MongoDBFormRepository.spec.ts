@@ -106,7 +106,8 @@ describe('MongoDB Form Repository', () => {
 
     it('debe retornar false si la data no es proporcionada', async () => {
       const newQuestion: IQuestion = {
-        question: 'pregunta'
+        question: 'pregunta',
+        num: 1
       }
       const resp = await formRepository.addQuestion('', newQuestion)
 
@@ -114,6 +115,7 @@ describe('MongoDB Form Repository', () => {
     })
     it('debe retornar true si existe un formulario con el id dado', async () => {
       const newQuestion: IQuestion = {
+        num: 1,
         question: 'pregunta'
       }
       const resp = await formRepository.addQuestion(form._id.toString(), newQuestion)
@@ -121,6 +123,7 @@ describe('MongoDB Form Repository', () => {
     })
     it('debe retornar false si no existe un formulario con el id dado', async () => {
       const newQuestion: IQuestion = {
+        num: 1,
         question: 'pregunta'
       }
       const resp = await formRepository.addQuestion('sdasdasedasdsa33dfws', newQuestion)
@@ -131,6 +134,7 @@ describe('MongoDB Form Repository', () => {
       //   question: 'pregunta'
       // }
       const newCQuestion: ICloseQuestion = {
+        num: 1,
         question: 'Pregunta cerrada',
         options: ['a', 'b', 'c'],
         answers: []
