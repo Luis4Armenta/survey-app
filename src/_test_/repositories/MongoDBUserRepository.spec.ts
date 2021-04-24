@@ -52,7 +52,8 @@ describe('MongoDB User Repository', () => {
   describe('login', () => {
     const mock: IUser = {
       username: 'example',
-      password: 'password'
+      password: 'password',
+      forms: []
     }
     beforeEach(async () => {
       await new User(mock).save()
@@ -61,31 +62,20 @@ describe('MongoDB User Repository', () => {
       await User.deleteMany({})
     })
 
-    test('si el usuario está vacio debe retornar un objeto vacio', async () => {
+    test('si el usuario está vacio debe retornar null', async () => {
       const resp = await userRepository.login('')
-      expect(resp).toStrictEqual({
-        username: '',
-        password: ''
-      })
-    })
-
-    test('si el usuario no está vacio debe retornar un objeto con el mismo email', async () => {
-      const resp = await userRepository.login('example')
-      expect(resp.username).toBe(mock.username)
+      expect(resp).toBeNull()
     })
 
     it('debe regresar toda la información del usuario', async () => {
       const resp = await userRepository.login('example')
-      expect(resp.username).toBe(mock.username)
-      expect(resp.password).toBe(mock.password)
+      expect(resp?.username).toBe(mock.username)
+      expect(resp?.password).toBe(mock.password)
     })
 
-    it('Si el usuario no es encontrado debe retornar un objeto vacio', async () => {
+    it('Si el usuario no es encontrado debe retornar null', async () => {
       const resp = await userRepository.login('example1')
-      expect(resp).toStrictEqual({
-        username: '',
-        password: ''
-      })
+      expect(resp).toBeNull()
     })
   })
 
