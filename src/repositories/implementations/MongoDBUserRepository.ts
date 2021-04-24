@@ -16,25 +16,20 @@ export class MongoDBUserRepository implements IUserRepository {
     }
   }
 
-  async login (username: string): Promise<IUser> {
+  async login (username: string): Promise<IUser | null> {
     if (username !== '') {
       const user = await User.findOne({ username: username })
         .then(user => {
           if (user != null) {
             return user
           } else {
-            return {
-              username: '',
-              password: ''
-            }
+            return null
           }
         })
+        .catch(() => null)
       return user
     } else {
-      return {
-        username: '',
-        password: ''
-      }
+      return null
     }
   }
 
