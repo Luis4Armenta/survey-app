@@ -11,7 +11,6 @@ export interface FormModel extends Document, IForm {
   _id: string
   name: string
   questions: QuestionModel[]
-  // questions: QuestionModel[]
 }
 
 export const formSchema = new Schema({
