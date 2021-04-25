@@ -64,7 +64,7 @@ export class MongoDBFormRepository implements IFormRepository {
 
   async removeQuestion (formId: string, questionId: string): Promise<boolean> {
     if (formId !== '' && questionId !== '') {
-      return await Form.findByIdAndUpdate(formId, { $pull: { questions: { _id: questionId } } })
+      return await Form.findByIdAndUpdate(formId, { $pull: { questions: { num: parseInt(questionId) } } })
         .then(form => {
           if (form !== null) {
             return true

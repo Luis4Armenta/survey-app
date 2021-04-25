@@ -1,0 +1,85 @@
+import { Resolver, Mutation, Arg, Query, Int } from 'type-graphql'
+import { MongoDBFormRepository } from '../repositories/implementations/MongoDBFormRepository'
+import { Form } from '../schemas/Form'
+import { addCloseQuestion, AddOpenQuestion } from '../schemas/Question'
+import { addQuestionUseCase } from '../useCases/addQuestion'
+import { deleteFormUseCase } from '../useCases/deleteForm'
+import { getFormUseCase } from '../useCases/getForm'
+import { newFormUseCase } from '../useCases/newForm'
+import { removeQuestionUseCase } from '../useCases/removeQuestion'
+
+@Resolver()
+export class FormResolver {
+  @Mutation(() => String)
+  async createForm (
+    @Arg('name') name: string,
+      @Arg('CloseQuestions', () => [addCloseQuestion], { description: 'Llene este parametro con preguntas cerradas', nullable: true }) closeQuestions: [addCloseQuestion],
+      @Arg('OpenQuestions', () => [AddOpenQuestion], { description: 'Llene este parametro con preguntas abiertas', nullable: true }) openQuestions: [AddOpenQuestion]
+  ): Promise<string> {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const questions: any[] = []
+    closeQuestions.forEach(question => {
+      questions.push(question)
+    })
+    openQuestions.forEach(question => {
+      questions.push(question)
+    })
+
+    return await newFormUseCase.execute({ name: name, questions: questions })
+  }
+
+  @Query(() => Form, { nullable: true })
+  async form (@Arg('id') id: string): Promise<Form | null> {
+    return await getFormUseCase.execute(id)
+  }
+
+  @Mutation(() => Boolean)
+  async addQuestion (
+    @Arg('formId') formId: string,
+      @Arg('openQuetion', () => AddOpenQuestion, { nullable: true, description: 'Utiliza este campo para agregar una pregunta abierta' }) openQuetion: AddOpenQuestion,
+      @Arg('closeQuetion', () => AddOpenQuestion, { nullable: true, description: 'Utiliza este campo para agregar una pregunta cerrada' }) closeQuetion: AddOpenQuestion
+  ): Promise<boolean> {
+    if (openQuetion !== null) {
+      return await addQuestionUseCase.execute(formId, openQuetion)
+    } else if (closeQuetion !== null) {
+      return await addQuestionUseCase.execute(formId, closeQuetion)
+    } else {
+      return false
+    }
+  }
+
+  @Mutation(() => Boolean)
+  async deleteForm (@Arg('formId', () => String) formId: string): Promise<boolean> {
+    return await deleteFormUseCase.execute(formId)
+  }
+
+  @Mutation(() => Boolean)
+  async removeQuestion (
+    @Arg('formId', () => String) formId: string,
+      @Arg('questionNumber', () => Int) questionNumber: number
+  ): Promise<boolean> {
+    return await removeQuestionUseCase.execute(formId, questionNumber)
+  }
+
+  // @Query(() => Form)
+  // async form (): Promise<Form> {
+  //   const f = await new MongoDBFormRepository().getForm('6083ae133b8a4625e58fe25d')
+  //   if (f !== null) {
+  //     // const form: IForm = f
+  //     // return {
+  //     //   name: form.name,
+  //     //   questions: form.questions
+  //     return f
+  //   } else {
+  //     return {
+  //       name: 'dadas',
+  //       questions: []
+  //     }
+  //   }
+  // }
+
+  @Mutation(() => String)
+  async addForm (): Promise<string> {
+    return await new MongoDBFormRepository().newForm({ name: 'Form', questions: [] })
+  }
+}
