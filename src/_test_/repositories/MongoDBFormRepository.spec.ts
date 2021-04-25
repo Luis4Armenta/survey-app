@@ -183,9 +183,11 @@ describe('MongoDB Form Repository', () => {
         name: 'Form',
         questions: [{
           _id: '1',
+          num: 1,
           question: 'Question'
         }, {
           _id: '2',
+          num: 2,
           question: 'Question 2'
         }]
       })
@@ -213,7 +215,7 @@ describe('MongoDB Form Repository', () => {
       const resp = await formRepository.removeQuestion(form._id, '1')
       const currentForm = await Form.findById(form._id)
       const questions = await Form.findById(form._id)
-      expect(questions?.questions[0]._id).not.toBe('1')
+      expect(questions?.questions[0].num).not.toBe(1)
       expect(currentForm?.questions.length).toBe(1)
       expect(resp).toBeTruthy()
     })
