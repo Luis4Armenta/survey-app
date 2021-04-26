@@ -4,42 +4,29 @@ import { IFormRepository } from '../IFormRepository'
 
 export class MongoDBFormRepository implements IFormRepository {
   async newForm (data: IForm): Promise<string> {
-    if (data.name !== '') {
-      const form = await Form.create({ name: data.name, questions: data.questions })
-      return form._id.toString()
+    if (this.hasAllTheParametersFilled(data.name)) {
+      return await Form.create({ name: data.name, questions: data.questions })
+        .then(form => form._id.toString())
+        .catch(() => '')
     } else {
       return ''
     }
   }
 
   async getForm (formId: string): Promise<IForm | null> {
-    if (formId !== '') {
+    if (this.hasAllTheParametersFilled(formId)) {
       return await Form.findById(formId)
-        .then(form => {
-          if (form !== null) {
-            return form
-          } else {
-            return null
-          }
-        })
-        .catch(() => {
-          return null
-        })
+        .then(form => form !== null ? form : null)
+        .catch(() => null)
     } else {
       return null
     }
   }
 
   async addQuestion (formId: string, question: IQuestion): Promise<boolean> {
-    if (formId !== '') {
+    if (this.hasAllTheParametersFilled(formId)) {
       return await Form.findByIdAndUpdate(formId, { $push: { questions: question } })
-        .then(form => {
-          if (form !== null) {
-            return true
-          } else {
-            return false
-          }
-        })
+        .then(form => form !== null)
         .catch(() => false)
     } else {
       return false
@@ -47,34 +34,32 @@ export class MongoDBFormRepository implements IFormRepository {
   }
 
   async deleteForm (formId: string): Promise<boolean> {
-    if (formId !== '') {
+    if (this.hasAllTheParametersFilled(formId)) {
       return await Form.findByIdAndDelete(formId)
-        .then(form => {
-          if (form !== null) {
-            return true
-          } else {
-            return false
-          }
-        })
+        .then(form => form !== null)
         .catch(() => false)
     } else {
       return false
     }
   }
 
-  async removeQuestion (formId: string, questionId: string): Promise<boolean> {
-    if (formId !== '' && questionId !== '') {
-      return await Form.findByIdAndUpdate(formId, { $pull: { questions: { num: parseInt(questionId) } } })
-        .then(form => {
-          if (form !== null) {
-            return true
-          } else {
-            return false
-          }
-        })
+  async removeQuestion (formId: string, questionNumber: number): Promise<boolean> {
+    if (this.hasAllTheParametersFilled(formId, questionNumber)) {
+      return await Form.findByIdAndUpdate(formId, { $pull: { questions: { num: questionNumber } } })
+        .then(form => form !== null)
         .catch(() => false)
     } else {
       return false
     }
+  }
+
+  private hasAllTheParametersFilled (...objects: any[]): boolean {
+    let response = true
+    objects.forEach(item => {
+      if (item === null || item === undefined || item === '' || item === 0) {
+        response = false
+      }
+    })
+    return response
   }
 }

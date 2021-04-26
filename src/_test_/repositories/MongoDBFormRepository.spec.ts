@@ -196,23 +196,23 @@ describe('MongoDB Form Repository', () => {
       await Form.deleteMany()
     })
     it('debe retornar un boolean', async () => {
-      const resp = await formRepository.removeQuestion('', '')
+      const resp = await formRepository.removeQuestion('', 6)
       expect(typeof resp).toBe('boolean')
     })
     it('si no tiene id o formulario debe retornar false', async () => {
-      const resp = await formRepository.removeQuestion('', '')
+      const resp = await formRepository.removeQuestion('', 6)
       expect(resp).toBeFalsy()
     })
     it('si el formulario no existe debe retornar false', async () => {
-      const resp = await formRepository.removeQuestion('3131d', '414d')
+      const resp = await formRepository.removeQuestion('3131d', 6)
       expect(resp).toBeFalsy()
     })
     it('si el formulario existe debe retornar true', async () => {
-      const resp = await formRepository.removeQuestion(form._id, '414d')
+      const resp = await formRepository.removeQuestion(form._id, 6)
       expect(resp).toBeTruthy()
     })
     it('debe eliminar la pregunta especificada', async () => {
-      const resp = await formRepository.removeQuestion(form._id, '1')
+      const resp = await formRepository.removeQuestion(form._id, 1)
       const currentForm = await Form.findById(form._id)
       const questions = await Form.findById(form._id)
       expect(questions?.questions[0].num).not.toBe(1)

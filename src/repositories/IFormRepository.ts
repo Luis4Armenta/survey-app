@@ -6,5 +6,5 @@ export interface IFormRepository {
   getForm: (formId: string) => Promise<IForm | null>
   addQuestion: (formId: string, question: IQuestion) => Promise<boolean>
   deleteForm: (formId: string) => Promise<boolean>
-  removeQuestion: (formId: string, questionId: string) => Promise<boolean>
+  removeQuestion: (formId: string, questionNumber: number) => Promise<boolean>
 }
