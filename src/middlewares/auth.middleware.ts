@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express'
 import { JsonWebToken } from '../providers/implementations/JsonWebToken'
-import getToken from '../utils/helper'
+import { getToken } from '../utils/helper'
 
 export function verifyToken (request: Request | any, response: Response, next: NextFunction): any {
   try {

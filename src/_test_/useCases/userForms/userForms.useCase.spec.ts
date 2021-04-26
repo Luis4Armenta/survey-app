@@ -5,7 +5,7 @@ describe('get all forms from an user', () => {
   const userRepository = new UserRepository()
   const useCase = new UserForms(userRepository)
   beforeAll(async () => {
-    await userRepository.register('mr.cat', 'password')
+    await userRepository.register({ username: 'mr.cat', password: 'password' })
   })
 
   it('si no es pasado nungun argumento debe retornar un array vacío', async () => {
