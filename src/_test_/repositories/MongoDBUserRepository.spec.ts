@@ -23,15 +23,15 @@ describe('MongoDB User Repository', () => {
       await User.deleteMany()
     })
     test('debe regresar false si se pasa alguno parametro vacio', async () => {
-      const resp = await userRepository.register('', '')
+      const resp = await userRepository.register({ username: '', password: '' })
       expect(resp).toBeFalsy()
     })
     test('debe regresar true si los parametros han sido llenados', async () => {
-      const resp = await userRepository.register('example', 'dadada')
+      const resp = await userRepository.register({ username: 'example', password: 'dadada' })
       expect(resp).toBeTruthy()
     })
     it('cuando se ingrese el formulario correctamente debe añadir un nuevo usuario a la DB', async () => {
-      const resp = await userRepository.register('example', 'passowrd')
+      const resp = await userRepository.register({ username: 'example', password: 'passowrd' })
       expect(resp).toBeTruthy()
       const users = await User.find({})
       expect(users.length).not.toBe(0)
@@ -41,7 +41,7 @@ describe('MongoDB User Repository', () => {
       const username = 'example'
       const password = 'password'
 
-      const resp = await userRepository.register(username, password)
+      const resp = await userRepository.register({ username: username, password: password })
       expect(resp).toBeTruthy()
       const users: IUser[] = await User.find({})
       expect(users[0].username).toBe(username)
@@ -97,8 +97,8 @@ describe('MongoDB User Repository', () => {
         name: 'test2',
         questions: []
       })
-      user.forms.push(form)
-      user.forms.push(form2)
+      await user.forms.push(form)
+      await user.forms.push(form2)
       await user.save()
     })
     afterEach(async () => {
@@ -116,7 +116,8 @@ describe('MongoDB User Repository', () => {
     })
 
     it('los formularios deben ser los mismos que los guardados', async () => {
-      const resp = await userRepository.getForms('example')
+      const resp = await userRepository.getForms(user._id)
+
       expect(resp[0]._id).toStrictEqual(user.forms[0]._id)
       expect(resp[1]._id).toStrictEqual(user.forms[1]._id)
     })

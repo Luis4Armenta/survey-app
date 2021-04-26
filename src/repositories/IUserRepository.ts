@@ -1,8 +1,9 @@
 import { IUser } from '../models/User.ts'
 import { IForm } from '../models/Form'
+import { CreateUserDTO } from '../useCases/createUser/createUserDTO'
 
 export interface IUserRepository {
-  register: (username: string, password: string) => Promise<boolean>
+  register: (data: CreateUserDTO) => Promise<boolean>
   login: (username: string) => Promise<IUser | null>
-  getForms: (username: string) => Promise<IForm[]>
+  getForms: (userId: string) => Promise<IForm[]>
 }

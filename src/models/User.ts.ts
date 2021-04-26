@@ -9,7 +9,7 @@ export interface IUser {
 }
 
 export interface UserModel extends Document, IUser {
-  _id?: string
+  _id: string
   username: string
   password: string
   forms: IForm[]
