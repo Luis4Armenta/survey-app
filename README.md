@@ -14,6 +14,4 @@ Everything is trying to develop with TDD
 - Type GraphQl
 
 ## Pending tasks
-- Make the correct implementation between user and form
-- Clean the code
 - A few tests
