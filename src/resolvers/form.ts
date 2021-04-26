@@ -1,4 +1,5 @@
-import { Resolver, Mutation, Arg, Query, Int } from 'type-graphql'
+import { Context } from 'node:vm'
+import { Resolver, Mutation, Arg, Query, Int, Ctx } from 'type-graphql'
 import { MongoDBFormRepository } from '../repositories/implementations/MongoDBFormRepository'
 import { Form } from '../schemas/Form'
 import { addCloseQuestion, AddOpenQuestion } from '../schemas/Question'
@@ -49,8 +50,9 @@ export class FormResolver {
   }
 
   @Mutation(() => Boolean)
-  async deleteForm (@Arg('formId', () => String) formId: string): Promise<boolean> {
-    return await deleteFormUseCase.execute(formId)
+  async deleteForm (@Arg('formId', () => String) formId: string, @Ctx() ctx: Context): Promise<boolean> {
+    const userId = ctx.user.id
+    return await deleteFormUseCase.execute(userId, formId)
   }
 
   @Mutation(() => Boolean)
