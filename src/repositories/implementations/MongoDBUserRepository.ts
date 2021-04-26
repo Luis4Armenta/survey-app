@@ -37,6 +37,16 @@ export class MongoDBUserRepository implements IUserRepository {
     }
   }
 
+  async deleteForm (userId: string, formdId: string): Promise<boolean> {
+    if (this.hasAllTheParametersFilled(userId, formdId)) {
+      return await User.findByIdAndUpdate(userId, { $pull: { forms: formdId } })
+        .then(user => user !== null)
+        .catch(() => false)
+    } else {
+      return false
+    }
+  }
+
   private hasAllTheParametersFilled (...objects: any[]): boolean {
     let response = true
     objects.forEach(item => {

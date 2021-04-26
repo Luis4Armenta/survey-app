@@ -2,17 +2,18 @@
 import { IForm } from '../../../models/Form'
 import { IUser } from '../../../models/User.ts'
 import { IUserRepository } from '../../../repositories/IUserRepository'
+import { CreateUserDTO } from '../../../useCases/createUser/createUserDTO'
 
 export class UserRepository implements IUserRepository {
   users: IUser[] = []
 
-  async register (username: string, password: string): Promise<boolean> {
-    if (username === '' && username === '') {
+  async register (data: CreateUserDTO): Promise<boolean> {
+    if (data.password === '' && data.username === '') {
       return false
     } else {
       this.users.push({
-        username: username,
-        password: password,
+        username: data.username,
+        password: data.password,
         forms: []
       })
       return true
@@ -45,6 +46,26 @@ export class UserRepository implements IUserRepository {
       return []
     } else {
       return []
+    }
+  }
+
+  async deleteForm (userId: string, formId: string): Promise<boolean> {
+    if (userId !== '' || formId !== '') {
+      let response = false
+      this.users.forEach(user => {
+        if (user._id === userId) {
+          user.forms.forEach(form => {
+            if (form._id === formId) {
+              const index = user.forms.indexOf(form)
+              user.forms.splice(index, 1)
+              response = true
+            }
+          })
+        }
+      })
+      return response
+    } else {
+      return false
     }
   }
 }
