@@ -5,7 +5,7 @@ export class RemoveQuestionUseCase {
 
   async execute (formId: string, questionNumber: number): Promise<boolean> {
     if (formId !== '' && questionNumber !== 0) {
-      return await this.formRepository.removeQuestion(formId, questionNumber.toString())
+      return await this.formRepository.removeQuestion(formId, questionNumber)
     } else {
       return false
     }

@@ -1,6 +1,7 @@
 import { IEncryptor } from '../../providers/IEncryptor'
 import { IWebToken } from '../../providers/IWebToken'
 import { IUserRepository } from '../../repositories/IUserRepository'
+import { hasAllTheParametersFilled } from '../../utils/helper'
 
 export class LoginUseCae {
   constructor (
@@ -10,7 +11,7 @@ export class LoginUseCae {
   ) { }
 
   async execute (username: string, password: string): Promise<LoginData | null> {
-    if (username !== '' && password !== '') {
+    if (hasAllTheParametersFilled(username, password)) {
       const user = await this.userRepository.login(username)
       if (user !== null) {
         if (this.encryptor.compare(password, user.password)) {
