@@ -15,9 +15,13 @@ export class LoginUseCae {
       const user = await this.userRepository.login(username)
       if (user !== null) {
         if (this.encryptor.compare(password, user.password)) {
-          return {
-            expiresIn: 2880,
-            token: this.tokenService.sign(username)
+          if (user._id !== undefined) {
+            return {
+              expiresIn: 2880,
+              token: this.tokenService.sign(user._id)
+            }
+          } else {
+            return null
           }
         } else {
           return null

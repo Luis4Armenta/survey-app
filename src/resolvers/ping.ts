@@ -6,7 +6,7 @@ export class PingResolver {
   @Query(() => String)
   ping (@Ctx() ctx: Context): string {
     console.log(ctx.req.headers.authorization)
-    console.log(ctx.user)
+    console.log(ctx.user.id)
     return 'pong'
   }
 }

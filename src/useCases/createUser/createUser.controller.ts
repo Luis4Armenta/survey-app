@@ -7,7 +7,6 @@ export class CreateUserController {
   async hanlde (request: Request, response: Response): Promise<Response> {
     const username = request.body.username
     const password = request.body.password
-    console.log('desde controller', request.body)
     const resp = await this.registerUserUseCase.execute({ username: username, password: password })
 
     if (resp) {

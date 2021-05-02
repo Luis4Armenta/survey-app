@@ -17,7 +17,6 @@ export function verifyToken (request: Request | any, response: Response, next: N
 
     const payload: any = new JsonWebToken().verify(token)
     request.userId = payload.id
-    console.log('dada')
     return next()
   } catch (error) {
     return response.status(401).send('deauthenticate request')

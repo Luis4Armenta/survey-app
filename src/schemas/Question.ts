@@ -65,8 +65,8 @@ export class addCloseQuestion implements Partial<CloseQuestion> {
   @Field(type => [String])
   options!: string[]
 
-  @Field(type => [AddCloseAnswer])
-  answers!: AddCloseAnswer
+  @Field(type => [AddCloseAnswer], { defaultValue: [] })
+  answers?: AddCloseAnswer
 }
 
 @InputType({ description: 'type for new open questions' })
@@ -77,6 +77,6 @@ export class AddOpenQuestion implements Partial<OpenQuestion> {
   @Field()
   question!: string
 
-  @Field(type => [AddOpenAnswer])
-  answers!: AddOpenAnswer[]
+  @Field(type => [AddOpenAnswer], { defaultValue: [] })
+  answers?: AddOpenAnswer[]
 }

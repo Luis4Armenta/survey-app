@@ -5,7 +5,7 @@ export class LoginController {
   constructor (private readonly loginUseCase: LoginUseCae) { }
 
   async hanlde (request: Request, response: Response): Promise<Response> {
-    return await this.loginUseCase.execute(request.body.name, request.body.password)
+    return await this.loginUseCase.execute(request.body.username, request.body.password)
       .then(res => {
         if (res !== null) {
           return response.status(200).json(res)

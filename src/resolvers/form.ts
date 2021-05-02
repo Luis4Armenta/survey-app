@@ -18,7 +18,7 @@ export class FormResolver {
       @Arg('OpenQuestions', () => [AddOpenQuestion], { description: 'Llene este parametro con preguntas abiertas', nullable: true }) openQuestions: [AddOpenQuestion]
   ): Promise<string> {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const questions: any[] = []
+    let questions: any[] = []
     closeQuestions.forEach(question => {
       questions.push(question)
     })
@@ -26,6 +26,7 @@ export class FormResolver {
       questions.push(question)
     })
 
+    questions = questions.sort(function (a, b) { return a.num - b.num })
     return await newFormUseCase.execute({ name: name, questions: questions })
   }
 
@@ -62,23 +63,6 @@ export class FormResolver {
   ): Promise<boolean> {
     return await removeQuestionUseCase.execute(formId, questionNumber)
   }
-
-  // @Query(() => Form)
-  // async form (): Promise<Form> {
-  //   const f = await new MongoDBFormRepository().getForm('6083ae133b8a4625e58fe25d')
-  //   if (f !== null) {
-  //     // const form: IForm = f
-  //     // return {
-  //     //   name: form.name,
-  //     //   questions: form.questions
-  //     return f
-  //   } else {
-  //     return {
-  //       name: 'dadas',
-  //       questions: []
-  //     }
-  //   }
-  // }
 
   @Mutation(() => String)
   async addForm (): Promise<string> {

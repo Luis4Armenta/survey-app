@@ -12,6 +12,7 @@ export class UserRepository implements IUserRepository {
       return false
     } else {
       this.users.push({
+        _id: Math.round(Math.random() * 10000).toString(),
         username: data.username,
         password: data.password,
         forms: []
