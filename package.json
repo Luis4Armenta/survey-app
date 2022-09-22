@@ -4,7 +4,7 @@
     "description": "This project will be the server of a survey application.",
     "main": "dist/index.js",
     "scripts": {
-        "test": "jest",
+        "test": "jest dist",
         "test:coverage": "jest --verbose --coverage",
         "start:dev": "ts-node src/index.ts",
         "build": "tsc",
